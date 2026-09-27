@@ -57,3 +57,11 @@ def test_summary_one_row_per_active_variety():
     s = ind.summary(clean, sm, ind.change(sm, 28), ind.change(sm, 365), ind.volatility(w))
     assert set(s["variety"]) == {"Up", "Flat", "Down"}
     assert s.set_index("variety").loc["Up", "chg28"] == pytest.approx(5.6, rel=1e-3)
+
+
+def test_shocks_leave_out_varieties_without_recent_data():
+    clean = _clean()
+    old = pd.DataFrame({"date": pd.date_range("2024-01-01", periods=100), "variety": "Gone", "price": 5.0,
+                        "category": "Fruits", "product": "Gone", "stale": False})
+    sm = ind.smooth(ind.wide(pd.concat([clean, old])))
+    assert "Gone" not in ind.shocks(sm, 26).index

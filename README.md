@@ -12,12 +12,12 @@ price-change, volatility and price-pressure indicators, and republishes a static
 ![Dashboard preview](reports/figures/preview.png)
 
 <!-- STATUS:START -->
-**Data through 2026-09-26** (updated 2026-09-27T16:40Z), 59 active varieties at the Gran Mercado Mayorista de Lima.
+**Data through 2026-09-26** (updated 2026-09-27T16:48Z), 59 active varieties at the Gran Mercado Mayorista de Lima.
 
 - Median 4-week price change: **+2.1%**; diffusion (share rising >10% minus share falling >10%): **+11.9 pp**.
 - Largest 4-week rises: Lechuga Romana Hidroponica (+61.9%), Arveja Verde Blanca Serrana (+59.6%), Zanahoria (+58.9%), Arveja Verde Americana (+52.5%), Papa Color (+39.3%).
 - Largest 4-week falls: Vainita Americana (-45.9%), Ajo Criollo O Napuri (-39.6%), Lechuga Americana (-35.3%), Aji Escabeche (-32.9%), Cebolla China (-30.8%).
-- Data quality (2010-01-01 to 2026-09-26): 358,765 clean observations, 0 duplicates, 0 non-positive prices and 994 outliers removed; median coverage 99%; 1 varieties currently stale, 6 discontinued, 1 uncategorised.
+- Data quality (2010-01-01 to 2026-09-26): 359,680 clean observations, 0 duplicates, 0 non-positive prices and 79 outliers removed; median coverage 99%; 1 varieties currently stale, 6 discontinued, 1 uncategorised.
 <!-- STATUS:END -->
 
 ## Pipeline

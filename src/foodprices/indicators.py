@@ -31,8 +31,10 @@ def pressure(chg: pd.DataFrame) -> pd.DataFrame:
 
 def shocks(sm: pd.DataFrame, weeks: int) -> pd.DataFrame:
     weekly = np.log(sm.resample("W").last()).diff()
-    z = (weekly / weekly.std()).clip(-4, 4)
-    return z.iloc[-weeks:].T
+    std = weekly.std()
+    z = (weekly / std.where(std > 0)).clip(-4, 4)
+    z = z.mask(weekly.notna() & z.isna(), 0.0)          # data but no variability: no shock
+    return z.iloc[-weeks:].T.dropna(how="all")          # varieties with no data in the window are left out
 
 
 def summary(clean, sm, chg28, yoy, vol) -> pd.DataFrame:
