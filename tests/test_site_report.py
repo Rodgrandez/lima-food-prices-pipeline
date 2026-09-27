@@ -3,7 +3,7 @@ import json
 import pandas as pd
 from test_indicators import _clean
 
-from foodprices import plots, quality, report, site
+from foodprices import plots, report, site
 
 
 def _report():
@@ -16,7 +16,7 @@ def test_site_build_writes_all_files(tmp_path):
     status = site.build(_clean(), _report(), tmp_path)
     for f in ["series", "pressure", "shocks", "summary", "quality", "status"]:
         assert (tmp_path / "data" / f"{f}.json").stat().st_size > 0
-    assert (tmp_path / "data" / "prices.csv.gz").exists() and (tmp_path / "index.html").exists()
+    assert (tmp_path / "index.html").exists()
     s = json.loads((tmp_path / "data" / "status.json").read_text(encoding="utf-8"))
     assert s == status and s["last_date"] == "2025-05-14" and s["varieties"] == 3
 
@@ -25,13 +25,6 @@ def test_site_json_keeps_accents(tmp_path):
     clean = _clean().replace({"variety": {"Up": "Aji Montaña"}})
     site.build(clean, _report(), tmp_path)
     assert "Aji Montaña" in (tmp_path / "data" / "series.json").read_text(encoding="utf-8")
-
-
-def test_prices_csv_roundtrips_into_quality(tmp_path):
-    site.build(_clean(), _report(), tmp_path)
-    p = pd.read_csv(tmp_path / "data" / "prices.csv.gz", parse_dates=["date"])
-    assert list(p.columns) == ["date", "variety", "price"] and len(p) == len(_clean())
-    quality.check(p, pd.DataFrame(columns=["variety", "product", "code", "category"]))
 
 
 def test_update_readme_from_status(tmp_path):
@@ -52,3 +45,12 @@ def test_preview_png(tmp_path):
                      index=pd.to_datetime(["2025-01-01", "2025-01-02"]))
     z = pd.DataFrame([[0.5, -1.0], [2.0, 4.0]], index=["A", "B"], columns=pd.to_datetime(["2025-01-05", "2025-01-12"]))
     assert plots.preview(p, z, tmp_path / "p.png").stat().st_size > 0
+
+
+def test_status_markdown_uses_singular():
+    q = dict(_report(), stale_now=["X"], discontinued=["Old"], uncategorised=[])
+    status = {"last_date": "2025-05-14", "updated_utc": "x", "varieties": 3, "median_chg28": 0.0, "diffusion": 0.0}
+    summ = pd.DataFrame({"variety": ["A"], "category": "V", "last_date": "x", "price": 1.0, "chg28": 1.0,
+                         "yoy": 0.0, "vol": 1.0})
+    t = report.status_markdown(status, q, summ)
+    assert "1 variety currently stale" in t and "1 discontinued" in t

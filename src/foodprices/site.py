@@ -39,7 +39,6 @@ def build(clean: pd.DataFrame, quality_report: dict, out_dir: Path) -> dict:
     _dump([{k: (_num(v) if isinstance(v, float) else v) for k, v in r.items()} for r in summ.to_dict("records")],
           data / "summary.json")
     _dump(quality_report, data / "quality.json")
-    clean[["date", "variety", "price"]].to_csv(data / "prices.csv.gz", index=False, date_format="%Y-%m-%d")
     status = {"last_date": f"{clean['date'].max():%Y-%m-%d}",
               "updated_utc": pd.Timestamp.now(tz="UTC").strftime("%Y-%m-%dT%H:%MZ"),
               "varieties": len(summ),

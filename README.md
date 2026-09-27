@@ -7,17 +7,17 @@
 
 A daily, automated pipeline for wholesale food prices at Lima's main wholesale market (Gran Mercado Mayorista de
 Lima), published by MIDAGRI-SISAP. It downloads and normalises the data, runs explicit data-quality checks, computes
-price-change, volatility and price-pressure indicators, and republishes a static Plotly.js dashboard every day.
+price-change, volatility and price-pressure indicators, and republishes a static Plotly.js dashboard daily.
 
 ![Dashboard preview](reports/figures/preview.png)
 
 <!-- STATUS:START -->
-**Data through 2026-09-26** (updated 2026-09-27T16:49Z), 59 active varieties at the Gran Mercado Mayorista de Lima.
+**Data through 2026-09-26** (updated 2026-09-27T16:58Z), 59 active varieties at the Gran Mercado Mayorista de Lima.
 
 - Median 4-week price change: **+2.1%**; diffusion (share rising >10% minus share falling >10%): **+11.9 pp**.
 - Largest 4-week rises: Lechuga Romana Hidroponica (+61.9%), Arveja Verde Blanca Serrana (+59.6%), Zanahoria (+58.9%), Arveja Verde Americana (+52.5%), Papa Color (+39.3%).
 - Largest 4-week falls: Vainita Americana (-45.9%), Ajo Criollo O Napuri (-39.6%), Lechuga Americana (-35.3%), Aji Escabeche (-32.9%), Cebolla China (-30.8%).
-- Data quality (2010-01-01 to 2026-09-26): 359,680 clean observations, 0 duplicates, 0 non-positive prices and 79 outliers removed; median coverage 99%; 1 varieties currently stale, 6 discontinued, 1 uncategorised.
+- Data quality (2010-01-01 to 2026-09-26): 359,680 clean observations, 0 duplicates, 0 non-positive prices and 79 outliers removed; median coverage 99%; 1 variety currently stale, 6 discontinued, 1 uncategorised.
 <!-- STATUS:END -->
 
 ## Pipeline
@@ -38,9 +38,10 @@ price-change, volatility and price-pressure indicators, and republishes a static
 5. **Publish**: the static site (HTML, JS and JSON) is pushed to the `gh-pages` branch and served by GitHub Pages.
 
 ## Automation
-The SISAP portal does not answer requests from outside Peru: a GitHub-hosted runner times out. The daily update
-therefore runs on a machine in Lima (Windows Task Scheduler, `scripts/update.ps1`), which rebuilds the site and
-pushes it to `gh-pages`. The "data through" badge always shows the date of the latest data actually published.
+The SISAP portal does not answer GitHub-hosted runners (connections time out). The daily update therefore runs
+on a machine in Lima (Windows Task Scheduler, `scripts/update.ps1`), which rebuilds the site and
+pushes it to `gh-pages`, on the days that machine is on. The "data through" badge always shows the date of the
+latest data actually published.
 CI (lint and tests) runs on GitHub Actions and needs no network access.
 
 ## Reproduce

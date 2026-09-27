@@ -15,11 +15,15 @@ def today() -> pd.Timestamp:
 
 
 def _published():
+    """Raw panel and catalogue published with the site (bootstrap for a fresh machine), or (None, None)."""
     try:
         with urllib.request.urlopen(config.PAGES_URL + "data/prices.csv.gz", timeout=60) as r:
-            return pd.read_csv(io.BytesIO(r.read()), compression="gzip", parse_dates=["date"])
+            prices = pd.read_csv(io.BytesIO(r.read()), compression="gzip", parse_dates=["date"])
+        with urllib.request.urlopen(config.PAGES_URL + "data/catalogue.csv", timeout=60) as r:
+            catalogue = pd.read_csv(io.BytesIO(r.read()), dtype={"code": str})
+        return prices, catalogue
     except OSError:
-        return None
+        return None, None
 
 
 def stage_fetch(client=None):
@@ -35,13 +39,16 @@ def stage_update(client=None, fetch_published=_published):
     if (config.DATA_RAW / "prices.csv.gz").exists():
         old, cat = panel.load(config.DATA_RAW)
     else:
-        old, cat = fetch_published(), None
+        old, cat = fetch_published()
     if old is None or old.empty:
         return stage_fetch(client)
     end = today()
-    new = panel.download(client, end - pd.Timedelta(days=config.UPDATE_DAYS), end)
+    start = end - pd.Timedelta(days=config.UPDATE_DAYS)
+    new = panel.download(client, start, end)
+    if new.empty:                                       # never republish old data silently
+        raise RuntimeError(f"SISAP returned no prices for {start:%Y-%m-%d} to {end:%Y-%m-%d}")
     prices = panel.merge(old, new)
-    fresh = panel.build_catalogue(client, [end])
+    fresh = panel.build_catalogue(client, [new["date"].max()])   # today's table may not be posted yet
     cat = fresh if cat is None else pd.concat([cat, fresh]).drop_duplicates("variety", keep="last")
     panel.save(prices, cat.sort_values("variety").reset_index(drop=True), config.DATA_RAW)
 
@@ -50,6 +57,7 @@ def stage_build():
     prices, cat = panel.load(config.DATA_RAW)
     clean, q = quality.check(prices, cat)
     status = site.build(clean, q, config.SITE)
+    panel.save(prices, cat, config.SITE / "data")      # raw panel + catalogue: bootstrap for a fresh machine
     w = ind.wide(clean)
     sm = ind.smooth(w)
     chg28 = ind.change(sm, config.CHANGE_DAYS)

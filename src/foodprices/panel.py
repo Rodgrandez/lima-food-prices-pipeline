@@ -32,7 +32,10 @@ def build_catalogue(client, dates: list[pd.Timestamp]) -> pd.DataFrame:
     by_name = {name.lower(): code for code, name in products.items()}
     codes = list(products)
     frames = [client.day(d, codes).assign(seen=d) for d in dates]
-    days = pd.concat([f for f in frames if len(f)], ignore_index=True)
+    frames = [f for f in frames if len(f)]
+    if not frames:
+        return pd.DataFrame(columns=["variety", "product", "code", "category"])
+    days = pd.concat(frames, ignore_index=True)
     days = days.sort_values("seen").drop_duplicates("variety", keep="last")
     days["code"] = days["product"].str.lower().map(by_name)
     days["category"] = days["code"].str[:2].map(config.CATEGORIES).fillna("Other")

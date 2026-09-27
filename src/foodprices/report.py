@@ -9,6 +9,10 @@ def _movers(summary, n=5, ascending=False) -> str:
     return ", ".join(f"{r.variety} ({r.chg28:+.1f}%)" for r in s.itertuples())
 
 
+def _count(n: int) -> str:
+    return f"{n} {'variety' if n == 1 else 'varieties'}"
+
+
 def status_markdown(status: dict, q: dict, summary) -> str:
     return "\n".join([
         (f"**Data through {status['last_date']}** (updated {status['updated_utc']}), {status['varieties']} active "
@@ -20,7 +24,7 @@ def status_markdown(status: dict, q: dict, summary) -> str:
         f"- Largest 4-week falls: {_movers(summary, ascending=True)}.",
         (f"- Data quality ({q['start']} to {q['end']}): {q['rows_clean']:,} clean observations, {q['duplicates']} "
          f"duplicates, {q['non_positive']} non-positive prices and {q['outliers']} outliers removed; median "
-         f"coverage {q['coverage_median']:.0%}; {len(q['stale_now'])} varieties currently stale, "
+         f"coverage {q['coverage_median']:.0%}; {_count(len(q['stale_now']))} currently stale, "
          f"{len(q['discontinued'])} discontinued, {len(q['uncategorised'])} uncategorised."),
     ])
 
