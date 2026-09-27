@@ -1,5 +1,6 @@
 import io
 import json
+import shutil
 import sys
 import urllib.request
 
@@ -67,6 +68,9 @@ def stage_build(release: bool = True):
                       config.FIGURES / "preview.png")
         summ = ind.summary(clean, sm, chg28, ind.change(sm, 365), ind.volatility(w))
         report.update_readme(config.ROOT / "README.md", status, q, summ)
+    preview = config.FIGURES / "preview.png"
+    if preview.exists():                                # og:image of the dashboard (link previews)
+        shutil.copy(preview, config.SITE / "preview.png")
     print(f"built site: data through {status['last_date']}, {status['varieties']} varieties", flush=True)
 
 

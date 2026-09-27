@@ -100,3 +100,14 @@ def test_daily_build_leaves_readme_and_preview_alone(tmp_path, monkeypatch):
     pipeline.stage_build(release=False)
     assert (tmp_path / "README.md").read_text(encoding="utf-8") == before
     assert not (config.FIGURES / "preview.png").exists() and (config.SITE / "data" / "status.json").exists()
+
+
+def test_site_ships_preview_image_for_link_previews(tmp_path, monkeypatch):
+    # index.html points og:image at preview.png, so every build (daily too) must publish it next to the page
+    _setup(tmp_path, monkeypatch)
+    pipeline.stage_update(client=FakeClient(), fetch_published=lambda: (None, None))
+    pipeline.stage_build()
+    pipeline.stage_build(release=False)
+    assert (config.SITE / "preview.png").read_bytes() == (config.FIGURES / "preview.png").read_bytes()
+    html = (config.SITE / "index.html").read_text(encoding="utf-8")
+    assert 'property="og:image" content="https://rodgrandez.github.io/lima-food-prices-pipeline/preview.png"' in html
