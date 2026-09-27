@@ -1,4 +1,4 @@
-"""Client and parsers for the MIDAGRI-SISAP wholesale market portal (public, HTML responses in ISO-8859-1)."""
+"""Client and parsers for the MIDAGRI-SISAP wholesale market portal (public, HTML responses)."""
 import html
 import re
 import time
@@ -12,6 +12,14 @@ from foodprices import config
 
 MISSING = {"", "...", "-"}
 DATE_RE = re.compile(r"\d{2}/\d{2}/\d{4}")
+
+
+def decode(raw: bytes) -> str:
+    """Price tables come as UTF-8 although the server declares ISO-8859-1; other pages really are Latin-1."""
+    try:
+        return raw.decode("utf-8")
+    except UnicodeDecodeError:
+        return raw.decode("iso-8859-1")
 
 
 def _text(cell: str) -> str:
@@ -85,7 +93,7 @@ class Client:
         for attempt in range(3):
             try:
                 with urllib.request.urlopen(request, timeout=300) as response:
-                    page = response.read().decode("iso-8859-1")
+                    page = decode(response.read())
                 time.sleep(self.sleep)
                 return page
             except OSError:

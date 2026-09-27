@@ -12,6 +12,12 @@ price-change, volatility and price-pressure indicators, and republishes a static
 ![Dashboard preview](reports/figures/preview.png)
 
 <!-- STATUS:START -->
+**Data through 2026-09-26** (updated 2026-09-27T16:40Z), 59 active varieties at the Gran Mercado Mayorista de Lima.
+
+- Median 4-week price change: **+2.1%**; diffusion (share rising >10% minus share falling >10%): **+11.9 pp**.
+- Largest 4-week rises: Lechuga Romana Hidroponica (+61.9%), Arveja Verde Blanca Serrana (+59.6%), Zanahoria (+58.9%), Arveja Verde Americana (+52.5%), Papa Color (+39.3%).
+- Largest 4-week falls: Vainita Americana (-45.9%), Ajo Criollo O Napuri (-39.6%), Lechuga Americana (-35.3%), Aji Escabeche (-32.9%), Cebolla China (-30.8%).
+- Data quality (2010-01-01 to 2026-09-26): 358,765 clean observations, 0 duplicates, 0 non-positive prices and 994 outliers removed; median coverage 99%; 1 varieties currently stale, 6 discontinued, 1 uncategorised.
 <!-- STATUS:END -->
 
 ## Pipeline
@@ -19,9 +25,10 @@ price-change, volatility and price-pressure indicators, and republishes a static
    re-download the last 60 days to capture revisions and merge them into the existing panel.
 2. **Normalise**: one row per date and variety; each variety is mapped to its product and category using the
    portal's daily tables.
-3. **Quality checks**: duplicates, non-positive prices, isolated glitches (more than 0.7 log points from the median
-   of the previous 15 observations, so only past data are used), stale prices (unchanged for 30+ observations,
-   flagged but kept), discontinued and uncategorised varieties. The report is rebuilt from the full raw history
+3. **Quality checks**: duplicates, non-positive prices, isolated glitches (a price more than 0.7 log points away
+   from the median of the previous 15 observations that is back near that median the next day; persistent level
+   shifts are real price moves and are kept), stale prices (unchanged for 30+ observations, flagged but kept),
+   discontinued and uncategorised varieties. The report is rebuilt from the full raw history
    and published with every update.
 4. **Indicators**: 7-day average price; 4-week and 12-month log changes; 28-day volatility of daily log changes;
    weekly shocks as z-scores against each variety's own history; and a price-pressure indicator (median 4-week

@@ -46,3 +46,19 @@ def test_quality_lists_uncategorised_and_discontinued():
     assert rep["uncategorised"] == ["D"]
     assert clean.loc[clean.variety == "D", "category"].eq("Other").all()
     assert 0 < rep["coverage_median"] <= 1 and rep["end"] == "2025-04-30"
+
+
+def test_persistent_level_shift_is_kept():
+    # a real price move (halving that stays) is a shock to report, not a glitch to delete
+    days = pd.date_range("2025-01-01", periods=60)
+    s = pd.DataFrame({"date": days, "variety": "A", "price": np.r_[np.full(30, 4.9), np.full(30, 1.9)]})
+    clean, rep = quality.check(s, CAT)
+    assert rep["outliers"] == 0 and len(clean) == 60
+
+
+def test_last_observation_is_never_dropped():
+    # today's jump cannot be confirmed as a glitch until tomorrow's price arrives
+    days = pd.date_range("2025-01-01", periods=30)
+    s = pd.DataFrame({"date": days, "variety": "A", "price": np.r_[np.full(29, 10.0), 40.0]})
+    clean, rep = quality.check(s, CAT)
+    assert rep["outliers"] == 0 and clean["price"].iloc[-1] == 40.0

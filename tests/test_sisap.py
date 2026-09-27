@@ -59,3 +59,9 @@ def test_client_posts_expected_fields():
     assert path == "resumenes/filtrar" and fields["periodicidad"] == "intervalo"
     assert fields["desde"] == "01/01/2025" and fields["hasta"] == "02/01/2025" and fields["productos[]"] == ["0204"]
     assert len(df) == 3
+
+
+def test_decode_prefers_utf8_and_falls_back_to_latin1():
+    # the price tables are UTF-8 although the server declares ISO-8859-1; the product list really is Latin-1
+    assert sisap.decode("Aji Montaña".encode()) == "Aji Montaña"
+    assert sisap.decode("Piña".encode("iso-8859-1")) == "Piña"

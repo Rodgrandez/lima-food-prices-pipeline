@@ -22,7 +22,10 @@ def check(prices: pd.DataFrame, catalogue: pd.DataFrame) -> tuple[pd.DataFrame, 
     logp = np.log(df["price"])
     med = logp.groupby(df["variety"]).transform(
         lambda s: s.rolling(config.OUTLIER_WINDOW, min_periods=3).median().shift(1))
-    out = (logp - med).abs() > config.OUTLIER_LOG_MAX
+    # a glitch is an isolated spike: far from the recent median AND the next observation is back near it.
+    # Persistent level shifts are real price moves and are kept; the latest observation cannot be judged yet.
+    nxt = logp.groupby(df["variety"]).shift(-1)
+    out = ((logp - med).abs() > config.OUTLIER_LOG_MAX) & ((nxt - med).abs() < config.OUTLIER_LOG_MAX / 2)
     by_var = df.loc[out, "variety"].value_counts()
     df = df[~out].copy()
     df["stale"] = df.groupby("variety")["price"].transform(_stale_flags).astype(bool)
