@@ -1,4 +1,3 @@
-# tests/test_sisap.py
 import itertools
 
 import pandas as pd

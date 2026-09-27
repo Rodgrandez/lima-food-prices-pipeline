@@ -1,4 +1,3 @@
-# src/foodprices/sisap.py
 """Client and parsers for the MIDAGRI-SISAP wholesale market portal (public, HTML responses in ISO-8859-1)."""
 import html
 import re

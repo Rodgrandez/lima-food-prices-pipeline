@@ -1,4 +1,3 @@
-# src/foodprices/probe.py
 """Connectivity check: can this machine (e.g. a GitHub runner) reach SISAP and parse a week of prices?"""
 import pandas as pd
 

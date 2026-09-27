@@ -1,4 +1,3 @@
-# tests/conftest.py
 DAY_HTML = (
     "<h1>Lima Metropolitana: Precio Promedio</h1><table><tr class=encabezado><td>Producto</td><td>Variedad</td>"
     "<td class=numero>Precio Promedio</td></tr>"
