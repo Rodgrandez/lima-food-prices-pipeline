@@ -36,7 +36,7 @@ def test_update_readme_from_status(tmp_path):
                          "price": [1.0, 2.0, 3.0], "chg28": [30.0, -20.0, 1.0], "yoy": 0.0, "vol": 1.0})
     report.update_readme(readme, status, _report(), summ)
     t = readme.read_text(encoding="utf-8")
-    assert "old" not in t and "2025-05-14" in t and "+1.2%" in t and "-12.5" in t
+    assert "old" not in t and "Snapshot with data through 2025-05-14" in t and "+1.2%" in t and "-12.5" in t
     assert "A (+30.0%)" in t and "B (-20.0%)" in t and "2 outliers" in t and t.endswith("end\n")
 
 

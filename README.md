@@ -12,7 +12,7 @@ price-change, volatility and price-pressure indicators, and republishes a static
 ![Dashboard preview](reports/figures/preview.png)
 
 <!-- STATUS:START -->
-**Data through 2026-09-26** (updated 2026-09-27T16:58Z), 59 active varieties at the Gran Mercado Mayorista de Lima.
+**Snapshot with data through 2026-09-26**, 59 active varieties at the Gran Mercado Mayorista de Lima. Current figures: [live dashboard](https://rodgrandez.github.io/lima-food-prices-pipeline/).
 
 - Median 4-week price change: **+2.1%**; diffusion (share rising >10% minus share falling >10%): **+11.9 pp**.
 - Largest 4-week rises: Lechuga Romana Hidroponica (+61.9%), Arveja Verde Blanca Serrana (+59.6%), Zanahoria (+58.9%), Arveja Verde Americana (+52.5%), Papa Color (+39.3%).

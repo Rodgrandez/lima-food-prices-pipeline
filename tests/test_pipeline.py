@@ -37,7 +37,7 @@ def test_build_end_to_end(tmp_path, monkeypatch):
     pipeline.stage_update(client=FakeClient(), fetch_published=lambda: (None, None))
     pipeline.stage_build()
     assert (config.SITE / "data" / "status.json").exists() and (config.FIGURES / "preview.png").exists()
-    assert "Data through 2025-12-31" in (tmp_path / "README.md").read_text(encoding="utf-8")
+    assert "data through 2025-12-31" in (tmp_path / "README.md").read_text(encoding="utf-8")
 
 
 class NoTodayClient(FakeClient):
@@ -90,3 +90,13 @@ def test_update_bootstraps_catalogue_from_published(tmp_path, monkeypatch):
     pipeline.stage_update(client=FakeClient(), fetch_published=lambda: (old, cat))
     _, saved = panel.load(config.DATA_RAW)
     assert saved.set_index("variety").loc["Mango Edward", "category"] == "Fruits"
+
+
+def test_daily_build_leaves_readme_and_preview_alone(tmp_path, monkeypatch):
+    # the scheduled run publishes the site only; README and preview are refreshed by hand at release time
+    _setup(tmp_path, monkeypatch)
+    pipeline.stage_update(client=FakeClient(), fetch_published=lambda: (None, None))
+    before = (tmp_path / "README.md").read_text(encoding="utf-8")
+    pipeline.stage_build(release=False)
+    assert (tmp_path / "README.md").read_text(encoding="utf-8") == before
+    assert not (config.FIGURES / "preview.png").exists() and (config.SITE / "data" / "status.json").exists()

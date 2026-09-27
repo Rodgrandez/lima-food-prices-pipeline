@@ -15,8 +15,9 @@ def _count(n: int) -> str:
 
 def status_markdown(status: dict, q: dict, summary) -> str:
     return "\n".join([
-        (f"**Data through {status['last_date']}** (updated {status['updated_utc']}), {status['varieties']} active "
-         "varieties at the Gran Mercado Mayorista de Lima."),
+        (f"**Snapshot with data through {status['last_date']}**, {status['varieties']} active varieties at the Gran "
+         "Mercado Mayorista de Lima. Current figures: [live dashboard](https://rodgrandez.github.io/"
+         "lima-food-prices-pipeline/)."),
         "",
         (f"- Median 4-week price change: **{status['median_chg28']:+.1f}%**; diffusion (share rising >10% minus "
          f"share falling >10%): **{status['diffusion']:+.1f} pp**."),
