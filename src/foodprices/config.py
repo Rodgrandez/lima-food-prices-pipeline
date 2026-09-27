@@ -26,3 +26,5 @@ SMOOTH_DAYS = 7
 CHANGE_DAYS = 28
 SHOCK_WEEKS = 26
 DIFFUSION_THRESHOLD = 10.0                 # % change over CHANGE_DAYS counted as a rise or a fall
+
+AUTHOR = ("Rodrigo Grandez", "rodfra123@gmail.com")   # commits of the published site (gh-pages)
