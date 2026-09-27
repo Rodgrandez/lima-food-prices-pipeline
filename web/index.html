@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lima Food Prices</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/plotly.js-dist-min@2.35.2/plotly.min.js"></script>
+</head>
+<body>
+<header>
+  <h1>Lima wholesale food prices</h1>
+  <p id="status">Loading…</p>
+  <p class="note">Source: MIDAGRI – SISAP, Gran Mercado Mayorista de Lima (average daily price, S/ per published
+  unit). Updated daily by a GitHub Action. <a href="https://github.com/Rodgrandez/lima-food-prices-pipeline">Code and
+  method</a>.</p>
+</header>
+<main>
+  <section><h2>Food price pressure</h2><div id="pressure" class="chart"></div></section>
+  <section><h2>Price by variety</h2>
+    <label for="variety">Variety </label><select id="variety"></select>
+    <div id="series" class="chart"></div></section>
+  <section><h2>Weekly price shocks (z-score, last 26 weeks)</h2><div id="shocks" class="chart tall"></div></section>
+  <section><h2>Change and volatility</h2><div class="tablewrap"><table id="summary"></table></div></section>
+  <section><h2>Data quality</h2><ul id="quality"></ul></section>
+</main>
+<script src="app.js"></script>
+</body>
+</html>
