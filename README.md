@@ -39,7 +39,7 @@ price-change, volatility and price-pressure indicators, and republishes a static
 
 ## Automation
 The SISAP portal does not answer GitHub-hosted runners (connections time out). The daily update therefore runs
-on a machine in Lima (Windows Task Scheduler, `scripts/update.ps1`), which rebuilds the site and
+on a machine in Lima (Windows Task Scheduler, `scripts/update.ps1`; a failed run is retried up to three times, 30 minutes apart), which rebuilds the site and
 pushes it to `gh-pages`, on the days that machine is on. The "data through" badge always shows the date of the
 latest data actually published.
 CI (lint and tests) runs on GitHub Actions and needs no network access.
