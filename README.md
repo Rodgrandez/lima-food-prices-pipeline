@@ -12,12 +12,12 @@ price-change, volatility and price-pressure indicators, and republishes a static
 ![Dashboard preview](reports/figures/preview.png)
 
 <!-- STATUS:START -->
-**Snapshot with data through 2026-09-26**, 59 active varieties at the Gran Mercado Mayorista de Lima. Current figures: [live dashboard](https://rodgrandez.github.io/lima-food-prices-pipeline/).
+**Snapshot with data through 2026-09-29**, 59 active varieties at the Gran Mercado Mayorista de Lima. Current figures: [live dashboard](https://rodgrandez.github.io/lima-food-prices-pipeline/).
 
-- Median 4-week price change: **+2.1%**; diffusion (share rising >10% minus share falling >10%): **+11.9 pp**.
-- Largest 4-week rises: Lechuga Romana Hidroponica (+61.9%), Arveja Verde Blanca Serrana (+59.6%), Zanahoria (+58.9%), Arveja Verde Americana (+52.5%), Papa Color (+39.3%).
-- Largest 4-week falls: Vainita Americana (-45.9%), Ajo Criollo O Napuri (-39.6%), Lechuga Americana (-35.3%), Aji Escabeche (-32.9%), Cebolla China (-30.8%).
-- Data quality (2010-01-01 to 2026-09-26): 359,680 clean observations, 0 duplicates, 0 non-positive prices and 79 outliers removed; median coverage 99%; 1 variety currently stale, 6 discontinued, 1 uncategorised.
+- Median 4-week price change: **+2.6%**; diffusion (share rising >10% minus share falling >10%): **+11.9 pp**.
+- Largest 4-week rises: Lechuga Romana Hidroponica (+49.3%), Arveja Verde Blanca Serrana (+48.9%), Zanahoria (+46.7%), Arveja Verde Americana (+43.5%), Papa Unica (+41.2%).
+- Largest 4-week falls: Vainita Americana (-63.6%), Ajo Criollo O Napuri (-39.4%), Ajo Morado (-31.0%), Lechuga Americana (-29.0%), Pacchoy (-25.5%).
+- Data quality (2010-01-01 to 2026-09-29): 359,857 clean observations, 0 duplicates, 0 non-positive prices and 79 outliers removed; median coverage 99%; 1 variety currently stale, 6 discontinued, 1 uncategorised.
 <!-- STATUS:END -->
 
 ## Pipeline
