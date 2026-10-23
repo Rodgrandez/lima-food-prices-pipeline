@@ -45,6 +45,12 @@ def test_shocks_shape_and_clip():
     assert z.shape == (3, 26) and z.max().max() <= 4 and z.loc["Up"].iloc[-1] == 4
 
 
+def test_shocks_last_week_not_dated_after_last_observation():
+    sm = ind.smooth(ind.wide(_clean()))                     # data end on a Wednesday
+    z = ind.shocks(sm, 26)
+    assert z.columns.max() == sm.index.max()
+
+
 def test_volatility_zero_for_constant_growth():
     v = ind.volatility(ind.wide(_clean()))
     assert v["Up"].iloc[-1] == pytest.approx(0.0, abs=1e-8)

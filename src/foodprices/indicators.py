@@ -29,11 +29,18 @@ def pressure(chg: pd.DataFrame) -> pd.DataFrame:
     return out[out["n"] > 0]
 
 
+def weekly(df: pd.DataFrame, how: str) -> pd.DataFrame:
+    """Weekly (Mon-Sun) aggregate; the week in progress is dated by the last observation, not its Sunday."""
+    out = df.resample("W").agg(how)
+    out.index = out.index.where(out.index <= df.index.max(), df.index.max())
+    return out
+
+
 def shocks(sm: pd.DataFrame, weeks: int) -> pd.DataFrame:
-    weekly = np.log(sm.resample("W").last()).diff()
-    std = weekly.std()
-    z = (weekly / std.where(std > 0)).clip(-4, 4)
-    z = z.mask(weekly.notna() & z.isna(), 0.0)          # data but no variability: no shock
+    wk = np.log(weekly(sm, "last")).diff()
+    std = wk.std()
+    z = (wk / std.where(std > 0)).clip(-4, 4)
+    z = z.mask(wk.notna() & z.isna(), 0.0)              # data but no variability: no shock
     return z.iloc[-weeks:].T.dropna(how="all")          # varieties with no data in the window are left out
 
 

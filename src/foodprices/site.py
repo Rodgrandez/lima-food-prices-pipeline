@@ -26,7 +26,7 @@ def build(clean: pd.DataFrame, quality_report: dict, out_dir: Path) -> dict:
     press = ind.pressure(chg28).dropna(subset=["median"])
     z = ind.shocks(sm, config.SHOCK_WEEKS)
     cats = clean.drop_duplicates("variety", keep="last").set_index("variety")["category"]
-    weekly = w.resample("W").mean()
+    weekly = ind.weekly(w, "mean")
     _dump({v: {"category": cats[v], "dates": [f"{d:%Y-%m-%d}" for d in weekly.index[weekly[v].notna()]],
                "price": [_num(x) for x in weekly[v].dropna()]} for v in weekly.columns}, data / "series.json")
     _dump({"dates": [f"{d:%Y-%m-%d}" for d in press.index], "median": [_num(x) for x in press["median"]],

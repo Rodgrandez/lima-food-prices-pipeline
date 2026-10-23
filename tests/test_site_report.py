@@ -27,6 +27,12 @@ def test_site_json_keeps_accents(tmp_path):
     assert "Aji Montaña" in (tmp_path / "data" / "series.json").read_text(encoding="utf-8")
 
 
+def test_weekly_series_not_dated_after_last_observation(tmp_path):
+    site.build(_clean(), _report(), tmp_path)                # data end on Wednesday 2025-05-14
+    series = json.loads((tmp_path / "data" / "series.json").read_text(encoding="utf-8"))
+    assert max(d for v in series.values() for d in v["dates"]) == "2025-05-14"
+
+
 def test_update_readme_from_status(tmp_path):
     readme = tmp_path / "README.md"
     readme.write_text("# T\n<!-- STATUS:START -->\nold\n<!-- STATUS:END -->\nend\n", encoding="utf-8")
