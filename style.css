@@ -1,0 +1,10 @@
+:root { --fg: #1d2330; --muted: #5b6475; --bg: #ffffff; --line: #e3e6ec; }
+@media (prefers-color-scheme: dark) { :root { --fg: #e8ebf1; --muted: #a3abbb; --bg: #14171d; --line: #2a2f39; } }
+body { margin: 0; font: 15px/1.5 system-ui, sans-serif; color: var(--fg); background: var(--bg); }
+header, main { max-width: 1100px; margin: 0 auto; padding: 0 16px; }
+h1 { margin: 24px 0 4px; } h2 { font-size: 1.1rem; margin: 28px 0 8px; }
+.note, #status { color: var(--muted); } .chart { height: 360px; } .chart.tall { height: 900px; }
+.tablewrap { overflow-x: auto; } table { border-collapse: collapse; width: 100%; font-size: 13px; }
+th, td { padding: 4px 8px; border-bottom: 1px solid var(--line); text-align: right; }
+th:first-child, td:first-child, th:nth-child(2), td:nth-child(2) { text-align: left; }
+th { cursor: pointer; } select { font: inherit; }
